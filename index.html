@@ -2,10 +2,96 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <title>我的第一個網頁</title>
+    <title>我的第一個網頁 - 摺扇動畫</title>
+    <style>
+        /* 1. 全螢幕居中背景 */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a; /* 深色背景讓扇子更明顯 */
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: sans-serif;
+        }
+
+        /* 2. 加載動畫容器 */
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        /* 3. 摺扇整體定位 */
+        .fan {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        /* 4. 每一片扇骨與扇面 */
+        .fan-blade {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 8px;
+            height: 80px;
+            background: linear-gradient(to top, #8b4513 15%, #d4af37 15%, #f5e6ca 100%);
+            border-radius: 4px 4px 0 0;
+            transform-origin: bottom center; /* 以底部為旋轉中心點 */
+            animation: fan-fold 2.5s infinite ease-in-out;
+        }
+
+        /* 5. 利用 delay 製造依序展開的效果 */
+        .fan-blade:nth-child(1) { animation-delay: 0.0s; }
+        .fan-blade:nth-child(2) { animation-delay: 0.05s; }
+        .fan-blade:nth-child(3) { animation-delay: 0.1s; }
+        .fan-blade:nth-child(4) { animation-delay: 0.15s; }
+        .fan-blade:nth-child(5) { animation-delay: 0.2s; }
+        .fan-blade:nth-child(6) { animation-delay: 0.25s; }
+        .fan-blade:nth-child(7) { animation-delay: 0.3s; }
+
+        /* 6. 定義扇子開合的關鍵影格動畫 */
+        @keyframes fan-fold {
+            0%, 100% {
+                transform: translateX(-50%) rotate(0deg); /* 合攏狀態 */
+            }
+            50% {
+                /* 7 片扇骨向兩側展開成半圓形 */
+                transform: translateX(-50%) rotate(calc((var(--i) - 4) * 22deg));
+            }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            color: #d4af37;
+        }
+    </style>
 </head>
 <body>
+
+    <!-- 摺扇加載動畫區塊 -->
+    <div class="loading-container">
+        <div class="fan">
+            <div class="fan-blade" style="--i:1;"></div>
+            <div class="fan-blade" style="--i:2;"></div>
+            <div class="fan-blade" style="--i:3;"></div>
+            <div class="fan-blade" style="--i:4;"></div>
+            <div class="fan-blade" style="--i:5;"></div>
+            <div class="fan-blade" style="--i:6;"></div>
+            <div class="fan-blade" style="--i:7;"></div>
+        </div>
+        <div class="loading-text">網頁載入中...</div>
+    </div>
+
     <h1>你好，世界！</h1>
     <p>這是我的第一個網頁，我是跟著電腦老師一起完成的！</p>
+
 </body>
 </html>
