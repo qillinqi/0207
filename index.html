@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <title>我的第一個網頁 - 360度摺扇動畫</title>
+    <title>我的第一個網頁 - 簡約扇面動畫</title>
     <style>
         body {
             margin: 0;
@@ -26,7 +26,7 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.8s ease, visibility 0.8s; /* 淡出效果 */
+            transition: opacity 0.8s ease, visibility 0.8s;
         }
 
         /* 加載完成後隱藏遮罩 */
@@ -35,35 +35,47 @@
             visibility: hidden;
         }
 
-        /* 2. 摺扇容器與 360 度旋轉動畫 */
-        .fan-container {
-            width: 120px;
-            height: 120px;
+        /* 2. 簡約扇面容器與 360 度旋轉動畫 */
+        .fan-canvas {
+            width: 150px; /* 調整扇子大小 */
+            height: 150px;
             position: relative;
-            /* 執行 360 度旋轉動畫，持續 2 秒 */
-            animation: rotate360 2s linear infinite;
+            /* 執行 360 度旋轉動畫 */
+            animation: rotate360 2.5s linear infinite;
         }
 
-        /* 3. 展開狀態的摺扇（7片扇骨固定展開） */
-        .fan-blade {
+        /* 3. 單一完整的扇面結構 */
+        .single-fan-surface {
             position: absolute;
-            bottom: 50%;
+            bottom: 50%; /* 放在容器中間位置 */
             left: 50%;
-            width: 8px;
-            height: 50px;
-            background: linear-gradient(to top, #8b4513 20%, #d4af37 20%, #f5e6ca 100%);
-            border-radius: 4px 4px 0 0;
-            transform-origin: bottom center;
+            width: 120px; /* 扇面寬度 */
+            height: 60px;  /* 扇面高度（半圓形） */
+            background: linear-gradient(45deg, #f5e6ca 0%, #d4af37 100%); /* 扇面顏色：金色漸層 */
+            
+            /* 重點：畫出半圓形 (上左、上右、下右、下左) */
+            border-radius: 60px 60px 0 0; 
+            
+            /* 定位與旋轉中心點 */
+            transform: translate(-50%, 0); /* 居中 */
+            transform-origin: bottom center; /* 以扇面底部中心為旋轉軸 */
+            
+            /* 加上一點陰影增加立體感 */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            
+            /* 加上一根簡單的扇柄 */
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: -15px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 6px;
+                height: 20px;
+                background-color: #8b4513; /* 咖啡色扇柄 */
+                border-radius: 3px;
+            }
         }
-
-        /* 各扇骨旋轉角度，組合出一把展開的扇子 */
-        .fan-blade:nth-child(1) { transform: translate(-50%, 0) rotate(-60deg); }
-        .fan-blade:nth-child(2) { transform: translate(-50%, 0) rotate(-40deg); }
-        .fan-blade:nth-child(3) { transform: translate(-50%, 0) rotate(-20deg); }
-        .fan-blade:nth-child(4) { transform: translate(-50%, 0) rotate(0deg); }
-        .fan-blade:nth-child(5) { transform: translate(-50%, 0) rotate(20deg); }
-        .fan-blade:nth-child(6) { transform: translate(-50%, 0) rotate(40deg); }
-        .fan-blade:nth-child(7) { transform: translate(-50%, 0) rotate(60deg); }
 
         /* 4. 定義 360 度旋轉關鍵影格 */
         @keyframes rotate360 {
@@ -76,7 +88,7 @@
         }
 
         .loading-text {
-            margin-top: 25px;
+            margin-top: 30px;
             font-size: 1.1rem;
             letter-spacing: 2px;
             color: #d4af37;
@@ -95,16 +107,11 @@
 </head>
 <body>
 
-    <!-- 1. 加載動畫區塊 (360度轉圈) -->
+    <!-- 1. 加載動畫區塊 (單一扇面轉圈) -->
     <div id="loader">
-        <div class="fan-container">
-            <div class="fan-blade"></div>
-            <div class="fan-blade"></div>
-            <div class="fan-blade"></div>
-            <div class="fan-blade"></div>
-            <div class="fan-blade"></div>
-            <div class="fan-blade"></div>
-            <div class="fan-blade"></div>
+        <div class="fan-canvas">
+            <!-- 這次只有一個乾淨的扇面 HTML 結構 -->
+            <div class="single-fan-surface"></div>
         </div>
         <div class="loading-text">網頁載入中...</div>
     </div>
@@ -112,16 +119,16 @@
     <!-- 2. 正式網頁內容 -->
     <div class="main-content">
         <h1>歡迎來到我的網站！</h1>
-        <p>摺扇旋轉 360 度完成後，順利進入主頁面了！</p>
+        <p>簡約的單面摺扇旋轉完成後，順利進入主頁面了！</p>
     </div>
 
     <!-- 3. JavaScript：控制轉完一圈後進入頁面 -->
     <script>
-        // 等待 2000 毫秒（2秒，即旋轉完一圈的時間）後執行
+        // 等待 2500 毫秒（2.5秒，旋轉完一圈的時間）後執行
         setTimeout(function() {
             const loader = document.getElementById('loader');
             loader.classList.add('hidden'); // 加入淡出隱藏的 Class
-        }, 2000);
+        }, 2500);
     </script>
 
 </body>
