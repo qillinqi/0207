@@ -2,96 +2,127 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <title>我的第一個網頁 - 摺扇動畫</title>
+    <title>我的第一個網頁 - 360度摺扇動畫</title>
     <style>
-        /* 1. 全螢幕居中背景 */
         body {
             margin: 0;
             padding: 0;
-            background-color: #1a1a1a; /* 深色背景讓扇子更明顯 */
+            background-color: #1a1a1a;
             color: #ffffff;
+            font-family: sans-serif;
+            min-height: 100vh;
+        }
+
+        /* 1. 加載動畫全螢幕遮罩 */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #111111;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s; /* 淡出效果 */
+        }
+
+        /* 加載完成後隱藏遮罩 */
+        #loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* 2. 摺扇容器與 360 度旋轉動畫 */
+        .fan-container {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            /* 執行 360 度旋轉動畫，持續 2 秒 */
+            animation: rotate360 2s linear infinite;
+        }
+
+        /* 3. 展開狀態的摺扇（7片扇骨固定展開） */
+        .fan-blade {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            width: 8px;
+            height: 50px;
+            background: linear-gradient(to top, #8b4513 20%, #d4af37 20%, #f5e6ca 100%);
+            border-radius: 4px 4px 0 0;
+            transform-origin: bottom center;
+        }
+
+        /* 各扇骨旋轉角度，組合出一把展開的扇子 */
+        .fan-blade:nth-child(1) { transform: translate(-50%, 0) rotate(-60deg); }
+        .fan-blade:nth-child(2) { transform: translate(-50%, 0) rotate(-40deg); }
+        .fan-blade:nth-child(3) { transform: translate(-50%, 0) rotate(-20deg); }
+        .fan-blade:nth-child(4) { transform: translate(-50%, 0) rotate(0deg); }
+        .fan-blade:nth-child(5) { transform: translate(-50%, 0) rotate(20deg); }
+        .fan-blade:nth-child(6) { transform: translate(-50%, 0) rotate(40deg); }
+        .fan-blade:nth-child(7) { transform: translate(-50%, 0) rotate(60deg); }
+
+        /* 4. 定義 360 度旋轉關鍵影格 */
+        @keyframes rotate360 {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            margin-top: 25px;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            color: #d4af37;
+        }
+
+        /* 5. 主要網頁內容區塊 */
+        .main-content {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            font-family: sans-serif;
-        }
-
-        /* 2. 加載動畫容器 */
-        .loading-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        /* 3. 摺扇整體定位 */
-        .fan {
-            position: relative;
-            width: 100px;
-            height: 100px;
-        }
-
-        /* 4. 每一片扇骨與扇面 */
-        .fan-blade {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 8px;
-            height: 80px;
-            background: linear-gradient(to top, #8b4513 15%, #d4af37 15%, #f5e6ca 100%);
-            border-radius: 4px 4px 0 0;
-            transform-origin: bottom center; /* 以底部為旋轉中心點 */
-            animation: fan-fold 2.5s infinite ease-in-out;
-        }
-
-        /* 5. 利用 delay 製造依序展開的效果 */
-        .fan-blade:nth-child(1) { animation-delay: 0.0s; }
-        .fan-blade:nth-child(2) { animation-delay: 0.05s; }
-        .fan-blade:nth-child(3) { animation-delay: 0.1s; }
-        .fan-blade:nth-child(4) { animation-delay: 0.15s; }
-        .fan-blade:nth-child(5) { animation-delay: 0.2s; }
-        .fan-blade:nth-child(6) { animation-delay: 0.25s; }
-        .fan-blade:nth-child(7) { animation-delay: 0.3s; }
-
-        /* 6. 定義扇子開合的關鍵影格動畫 */
-        @keyframes fan-fold {
-            0%, 100% {
-                transform: translateX(-50%) rotate(0deg); /* 合攏狀態 */
-            }
-            50% {
-                /* 7 片扇骨向兩側展開成半圓形 */
-                transform: translateX(-50%) rotate(calc((var(--i) - 4) * 22deg));
-            }
-        }
-
-        .loading-text {
-            margin-top: 20px;
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-            color: #d4af37;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <!-- 摺扇加載動畫區塊 -->
-    <div class="loading-container">
-        <div class="fan">
-            <div class="fan-blade" style="--i:1;"></div>
-            <div class="fan-blade" style="--i:2;"></div>
-            <div class="fan-blade" style="--i:3;"></div>
-            <div class="fan-blade" style="--i:4;"></div>
-            <div class="fan-blade" style="--i:5;"></div>
-            <div class="fan-blade" style="--i:6;"></div>
-            <div class="fan-blade" style="--i:7;"></div>
+    <!-- 1. 加載動畫區塊 (360度轉圈) -->
+    <div id="loader">
+        <div class="fan-container">
+            <div class="fan-blade"></div>
+            <div class="fan-blade"></div>
+            <div class="fan-blade"></div>
+            <div class="fan-blade"></div>
+            <div class="fan-blade"></div>
+            <div class="fan-blade"></div>
+            <div class="fan-blade"></div>
         </div>
         <div class="loading-text">網頁載入中...</div>
     </div>
 
-    <h1>你好，世界！</h1>
-    <p>這是我的第一個網頁，我是跟著電腦老師一起完成的！</p>
+    <!-- 2. 正式網頁內容 -->
+    <div class="main-content">
+        <h1>歡迎來到我的網站！</h1>
+        <p>摺扇旋轉 360 度完成後，順利進入主頁面了！</p>
+    </div>
+
+    <!-- 3. JavaScript：控制轉完一圈後進入頁面 -->
+    <script>
+        // 等待 2000 毫秒（2秒，即旋轉完一圈的時間）後執行
+        setTimeout(function() {
+            const loader = document.getElementById('loader');
+            loader.classList.add('hidden'); // 加入淡出隱藏的 Class
+        }, 2000);
+    </script>
 
 </body>
 </html>
