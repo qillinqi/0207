@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <title>我的第一個網頁 - 簡約扇面動畫</title>
+    <title>我的第一個網頁 - 150度古風摺扇動畫</title>
     <style>
         body {
             margin: 0;
@@ -29,55 +29,68 @@
             transition: opacity 0.8s ease, visibility 0.8s;
         }
 
-        /* 加載完成後隱藏遮罩 */
         #loader.hidden {
             opacity: 0;
             visibility: hidden;
         }
 
-        /* 2. 簡約扇面容器與 360 度旋轉動畫 */
-        .fan-canvas {
-            width: 150px; /* 調整扇子大小 */
-            height: 150px;
+        /* 2. 旋轉容器（整體 360 度旋轉） */
+        .fan-spinner {
+            width: 200px;
+            height: 200px;
             position: relative;
-            /* 執行 360 度旋轉動畫 */
             animation: rotate360 2.5s linear infinite;
         }
 
-        /* 3. 單一完整的扇面結構 */
-        .single-fan-surface {
+        /* 3. 摺扇整體區塊 (150度展開) */
+        .fan {
             position: absolute;
-            bottom: 50%; /* 放在容器中間位置 */
+            bottom: 50%;
             left: 50%;
-            width: 120px; /* 扇面寬度 */
-            height: 60px;  /* 扇面高度（半圓形） */
-            background: linear-gradient(45deg, #f5e6ca 0%, #d4af37 100%); /* 扇面顏色：金色漸層 */
-            
-            /* 重點：畫出半圓形 (上左、上右、下右、下左) */
-            border-radius: 60px 60px 0 0; 
-            
-            /* 定位與旋轉中心點 */
-            transform: translate(-50%, 0); /* 居中 */
-            transform-origin: bottom center; /* 以扇面底部中心為旋轉軸 */
-            
-            /* 加上一點陰影增加立體感 */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            
-            /* 加上一根簡單的扇柄 */
-            &::after {
-                content: '';
-                position: absolute;
-                bottom: -15px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 6px;
-                height: 20px;
-                background-color: #8b4513; /* 咖啡色扇柄 */
-                border-radius: 3px;
-            }
+            width: 100px;
+            height: 100px;
+            transform: translate(-50%, 50%);
         }
 
-        /* 4. 定義 360 度旋轉關鍵影格 */
+        /* 4. 扇頁/扇骨細節 (共 7 片，組成 150 度) */
+        .blade {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 16px;
+            height: 80px;
+            margin-left: -8px;
+            /* 漸層呈現扇面布料與竹骨質感 */
+            background: linear-gradient(to top, #222 0%, #333 18%, #1f2833 20%, #45a29e 100%);
+            border-radius: 3px 3px 0 0;
+            box-shadow: inset 1px 0 2px rgba(255,255,255,0.2), 0 2px 5px rgba(0,0,0,0.5);
+            transform-origin: bottom center;
+        }
+
+        /* 5. 150度精確分配 (從 -75度 到 +75度，間隔 25度) */
+        .blade:nth-child(1) { transform: rotate(-75deg); }
+        .blade:nth-child(2) { transform: rotate(-50deg); }
+        .blade:nth-child(3) { transform: rotate(-25deg); }
+        .blade:nth-child(4) { transform: rotate(0deg); }
+        .blade:nth-child(5) { transform: rotate(25deg); }
+        .blade:nth-child(6) { transform: rotate(50deg); }
+        .blade:nth-child(7) { transform: rotate(75deg); }
+
+        /* 6. 扇軸 / 大骨核心點 */
+        .fan-pivot {
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 14px;
+            background-color: #c5a059; /* 金屬/木質固定鉚釘 */
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(0,0,0,0.8);
+            z-index: 10;
+        }
+
+        /* 7. 360 度旋轉關鍵影格 */
         @keyframes rotate360 {
             0% {
                 transform: rotate(0deg);
@@ -88,13 +101,13 @@
         }
 
         .loading-text {
-            margin-top: 30px;
+            margin-top: 35px;
             font-size: 1.1rem;
             letter-spacing: 2px;
-            color: #d4af37;
+            color: #c5a059;
         }
 
-        /* 5. 主要網頁內容區塊 */
+        /* 8. 主要網頁內容區塊 */
         .main-content {
             display: flex;
             flex-direction: column;
@@ -107,11 +120,19 @@
 </head>
 <body>
 
-    <!-- 1. 加載動畫區塊 (單一扇面轉圈) -->
+    <!-- 1. 加載動畫區塊 (150度古典摺扇旋轉) -->
     <div id="loader">
-        <div class="fan-canvas">
-            <!-- 這次只有一個乾淨的扇面 HTML 結構 -->
-            <div class="single-fan-surface"></div>
+        <div class="fan-spinner">
+            <div class="fan">
+                <div class="blade"></div>
+                <div class="blade"></div>
+                <div class="blade"></div>
+                <div class="blade"></div>
+                <div class="blade"></div>
+                <div class="blade"></div>
+                <div class="blade"></div>
+                <div class="fan-pivot"></div>
+            </div>
         </div>
         <div class="loading-text">網頁載入中...</div>
     </div>
@@ -119,15 +140,14 @@
     <!-- 2. 正式網頁內容 -->
     <div class="main-content">
         <h1>歡迎來到我的網站！</h1>
-        <p>簡約的單面摺扇旋轉完成後，順利進入主頁面了！</p>
+        <p>150 度傳統摺扇旋轉完成，順利進入主頁面！</p>
     </div>
 
     <!-- 3. JavaScript：控制轉完一圈後進入頁面 -->
     <script>
-        // 等待 2500 毫秒（2.5秒，旋轉完一圈的時間）後執行
         setTimeout(function() {
             const loader = document.getElementById('loader');
-            loader.classList.add('hidden'); // 加入淡出隱藏的 Class
+            loader.classList.add('hidden');
         }, 2500);
     </script>
 
